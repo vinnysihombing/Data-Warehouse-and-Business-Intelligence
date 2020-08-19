@@ -1,0 +1,86 @@
+<Schema name="New Schema1">
+  <Dimension type="TimeDimension" visible="true" highCardinality="false" name="Dimensi Date">
+    <Hierarchy name="Month" visible="true" hasAll="true" primaryKey="date_pk">
+      <Table name="date_dim" schema="public">
+      </Table>
+      <Level name="Year" visible="true" column="year_number" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
+      </Level>
+      <Level name="Month" visible="true" column="month_number" type="String" uniqueMembers="false" levelType="TimeMonths" hideMemberIf="Never">
+      </Level>
+      <Level name="Day" visible="true" column="day_of_month_number" type="Integer" uniqueMembers="false" levelType="TimeDays" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+    <Hierarchy name="Date" visible="true" hasAll="true" allMemberName="AllDate" primaryKey="date_pk">
+      <Table name="date_dim" schema="public">
+      </Table>
+      <Level name="Description" visible="true" column="day_desc" type="String" uniqueMembers="false" levelType="TimeDays" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Cube name="Cube" visible="true" cache="true" enabled="true">
+    <Table name="fact_table" schema="public">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="fk_location" highCardinality="false" name="Dimensi Location">
+      <Hierarchy name="Alamat" visible="true" hasAll="true" allMemberName="AllLocation" primaryKey="id location">
+        <Table name="lokasi_dim" schema="public">
+        </Table>
+        <Level name="alamat" visible="true" column="alamat" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="city" visible="true" column="city" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="provinsi" visible="true" column="provinsi" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="country" visible="true" column="country" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="fk_item" highCardinality="false" name="Dimensi Item">
+      <Hierarchy name="item" visible="true" hasAll="true" allMemberName="AllItem" primaryKey="id item">
+        <Table name="item_dim" schema="public">
+        </Table>
+        <Level name="nama" visible="true" column="nama item" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="version" visible="true" column="version" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="fk_participant" highCardinality="false" name="Dimensi Participant">
+      <Hierarchy name="Identification" visible="true" hasAll="true" primaryKey="id participant">
+        <Table name="participant_dim" schema="public">
+        </Table>
+        <Level name="prodi" visible="true" column="prodi" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="kelas" visible="true" column="kelas" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="fk_pengeluaran" highCardinality="false" name="Dimensi Pengeluaran">
+      <Hierarchy name="identification" visible="true" hasAll="true" primaryKey="id pengeluaran">
+        <Table name="pengeluaran_dim" schema="public">
+        </Table>
+        <Level name="pengeluaran" visible="true" column="jumlah pengeluaran" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <DimensionUsage source="Dimensi Date" name="usege date" visible="true" foreignKey="fk_date" highCardinality="false">
+    </DimensionUsage>
+    <Dimension type="StandardDimension" visible="true" foreignKey="fk_pemasukan" name="Dimensi Pemasukan">
+      <Hierarchy name="Identification" visible="true" hasAll="true" allMemberName="allPemasukan" primaryKey="id pemasukan">
+        <Table name="pemasukan_dim" schema="public" alias="">
+        </Table>
+        <Level name="pemasukan" visible="true" column="jumlah pemasukan" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="stok" column="stok" datatype="Numeric" aggregator="min" visible="true">
+    </Measure>
+    <Measure name="jumlah" column="jumlah" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="jumlah pengeluaran" column="jumlah pengeluaran" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="jumlah kehadiran" column="jumlah kehadiran" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="jumlah pemasukan" column="jumlah pemasukan" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
